@@ -1,30 +1,16 @@
 name: Deploy to GitHub Pages
-
 on:
   push:
-    branches:
-      - master
-
+    branches: [ main ]
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '14' # 对于Vue 2老项目，14版本兼容性最好
-
-      - name: Install dependencies
-        # 强制安装，如果报错也不停止
-        run: npm install --legacy-peer-deps || true
-
-      - name: Build
-        # 强制打包，如果报错也不停止
-        run: npm run build || true
-
+      - uses: actions/checkout@v3
+      - name: Install and Build
+        run: |
+          npm install
+          npm run build
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
